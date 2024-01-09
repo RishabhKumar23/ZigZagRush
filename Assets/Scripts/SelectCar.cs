@@ -48,7 +48,7 @@ public class SelectCar : MonoBehaviour
             instance = this;
         }
 
-        //ChangeCar(0);
+        ChangeCar(0);
 
     } // end Awake()
 

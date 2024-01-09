@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     // variable 
     public bool isGameStarted;
     public GameObject platformSpawner;
@@ -32,13 +33,12 @@ public class GameManager : MonoBehaviour
     int score;
     int bestScore, totalStar, totalDiamond;
     bool countScore;
+    bool soundPlayed = false; // New flag to track if GameEndSound has been played
+    bool GameEndSoundPlayed = false;
 
     // this will amke this script get called from any script
-    //public static GameManager Instance;
-
     private void Awake()
     {
-        Debug.Log("GameManager Awake");
         if(instance == null)
         {
             instance = this;
@@ -49,6 +49,14 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // Playes one time after game scene started 
+        if (!soundPlayed)
+        {
+            SoundManager.sm.GameStartSound();
+            soundPlayed = true;
+        }
+
         // Get Selected car
         selectedCar = PlayerPrefs.GetInt("SelectCar");
         Instantiate(player[selectedCar], playerStartPosition, Quaternion.identity);
@@ -59,8 +67,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         gameOverPanel.SetActive(false);
-
-        Debug.Log("Scene Name" + SceneManager.GetActiveScene().name);
 
         // play with old score
         if (PlayerPrefs.GetInt("oldScore") != 0)
@@ -86,7 +92,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!isGameStarted)
+        if(!isGameStarted && soundPlayed)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -95,18 +101,24 @@ public class GameManager : MonoBehaviour
         }
     }// end update
 
-    // on game start
+    // On game start
     public void GameStart()
     {
-        isGameStarted = true;
-        countScore = true;
-        StartCoroutine(updateScore());
-        platformSpawner.SetActive(true);
+            isGameStarted = true;
+            countScore = true;
+            StartCoroutine(updateScore());
+            platformSpawner.SetActive(true);
     } // end GameStart
 
-    // on game over
+    // On game over
     public void GameEnd()
     {
+        if (!GameEndSoundPlayed)
+        {
+            SoundManager.sm.GameEndSound();
+            GameEndSoundPlayed = true;
+        }
+
         gameOverPanel.SetActive(true);
         lastScoreText.text = score.ToString();
         countScore = false;
@@ -116,13 +128,11 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("bestScore", score);
             newHighScoreImage.SetActive(true);
-
         }
     }// End GameEnd
-    
+
     public void StartWithScore()
     {
-        Debug.Log("StartWithScore => started");
         PlayerPrefs.SetInt("oldScore", score);
         SceneManager.LoadScene("MainGameScene");
 
@@ -143,7 +153,6 @@ public class GameManager : MonoBehaviour
             {
                 scoreText.text = score.ToString();
             }
-            // scoreText.text = score.ToString("D5");
         }
 
     } // end updateScore
@@ -160,25 +169,17 @@ public class GameManager : MonoBehaviour
 
     public void GetStar()
     {
-        // Debug.Log("GetStar called start");
-        
+        SoundManager.sm.StarSound();
         int newStar = totalStar++;
         PlayerPrefs.SetInt("totalStar", newStar);
         starText.text = totalStar.ToString();
-        
-        // Debug.Log("GetStar called end");
-
     } // end get star
 
     public void GetDiamond()
     {
-        // Debug.Log("GetDiamond called start");
-        
+        SoundManager.sm.DiamondSound();
         int newDiamond = totalDiamond++;
         PlayerPrefs.SetInt("totalDiamond", newDiamond);
         diamondText.text = totalDiamond.ToString();
-        
-        // Debug.Log("GetDiamond called start");
-
     } // end get diamond
 }

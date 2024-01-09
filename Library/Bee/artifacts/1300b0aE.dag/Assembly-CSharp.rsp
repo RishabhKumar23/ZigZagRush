@@ -408,12 +408,14 @@
 "Assets/Scripts/CarAnimation.cs"
 "Assets/Scripts/CarController.cs"
 "Assets/Scripts/GameManager.cs"
+"Assets/Scripts/GoToIntroScene.cs"
 "Assets/Scripts/Items.cs"
 "Assets/Scripts/Platform.cs"
 "Assets/Scripts/PlatformAnimation.cs"
 "Assets/Scripts/PlatformSpawner.cs"
 "Assets/Scripts/ScreenFollow.cs"
 "Assets/Scripts/SelectCar.cs"
+"Assets/Scripts/SoundManager.cs"
 "Assets/Scripts/UnityAds.cs"
 -langversion:9.0
 
