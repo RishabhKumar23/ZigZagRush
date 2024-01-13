@@ -87,7 +87,30 @@ public class GameManager : MonoBehaviour
         bestScore = PlayerPrefs.GetInt("bestScore");
         bestText.text = bestScore.ToString();
 
+        //ResetGame();
+
     } // end start
+
+    // to Reset the Game
+    void ResetGame()
+    {
+        score = 0;
+        bestScore = 0;
+        totalStar = 0;
+        totalDiamond = 0;
+
+        // Update UI elements after resetting scores
+        scoreText.text = score.ToString();
+        bestText.text = bestScore.ToString();
+        diamondText.text = totalDiamond.ToString();
+        starText.text = totalStar.ToString();
+
+        // Save the changes to PlayerPrefs
+        PlayerPrefs.SetInt("bestScore", bestScore);
+        PlayerPrefs.SetInt("totalStar", totalStar);
+        PlayerPrefs.SetInt("totalDiamond", totalDiamond);
+    } // End ResetGame
+
 
     // Update is called once per frame
     void Update()

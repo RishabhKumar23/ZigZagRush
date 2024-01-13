@@ -69,14 +69,15 @@ public class SelectCar : MonoBehaviour
         {
             if (PlayerPrefs.GetInt(ownCarIndex) == 1)
             {
-                // useBtn.GetComponent<Image>().color = greenColor;
-                useBtn.GetComponentInChildren<Text>().text = "";
-
+                //useBtn.interactable = true;
+                useBtn.GetComponent<Image>().color = greenColor;
+                useBtn.GetComponentInChildren<Text>().text = "Start";
             }
             else
             {
-                // useBtn.GetComponent<Image>().color = redColor;
-                useBtn.GetComponentInChildren<Text>().text = "BUY";
+                //useBtn.interactable = false;
+                useBtn.GetComponent<Image>().color = redColor;
+                useBtn.GetComponentInChildren<Text>().text = "Buy";
             }
         }
         else
